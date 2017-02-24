@@ -18,7 +18,7 @@ Vehicle.prototype.update = function () {
     this.acc.mult(0);
 };
 Vehicle.prototype.defaultColor = function () {
-    this.R = 255, this.G = 200, this.B = 0;
+    this.R = 255, this.G = 100, this.B = 50;
     this.changedDefaultColor = false;
 };
 Vehicle.prototype.randomColor = function () {
@@ -35,7 +35,7 @@ Vehicle.prototype.show = function () {
 };
 
 Vehicle.prototype.behaviors = function () {
-    this.randomColor();
+    this.randomColorByPosition();
     var arrive = this.arrive(this.target);
     var mouse = createVector(mouseX, mouseY);
     // var flee = this.flee(mouse);
@@ -97,8 +97,7 @@ Vehicle.prototype.isInPosition = function () {
     var distance = desired.mag();
     return (distance < 1);
 };
-Vehicle.prototype.randomColor = function () {
-    if (!this.isInPosition()) this.randomColor(); else {
-        this.defaultColor();
-    }
+Vehicle.prototype.randomColorByPosition = function () {
+    if (this.isInPosition()) this.defaultColor();
+    else this.randomColor();
 };

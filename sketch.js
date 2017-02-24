@@ -25,6 +25,6 @@ function draw() {
         _vehicle.behaviors();
         _vehicle.update();
         _vehicle.show();
-    })
+    });
     frameRate(50);
 }
