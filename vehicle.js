@@ -9,8 +9,8 @@ function Vehicle(x, y) {
     this.r = 8;
     this.maxSpeed = 20;
     this.maxForce = 0.3;
-    this.R = 255;
-    this.G = 255, this.B = 255
+    this.R = 255, this.G = 255, this.B = 255;
+    this.changedDefaultColor = false;
 }
 Vehicle.prototype.update = function () {
     this.pos.add(this.velocity);
@@ -18,10 +18,14 @@ Vehicle.prototype.update = function () {
     this.acc.mult(0);
 };
 Vehicle.prototype.defaultColor = function () {
-    this.R = 255, this.G = 255, this.B = 255;
+    this.R = 255, this.G = 200, this.B = 0;
+    this.changedDefaultColor = false;
 };
 Vehicle.prototype.randomColor = function () {
-    this.R = random(0, 255), this.G = random(0, 255), this.B = random(0, 255);
+    if (!this.changedDefaultColor) {
+        this.R = random(0, 255), this.G = random(0, 255), this.B = random(0, 255);
+        this.changedDefaultColor = true;
+    }
 };
 
 Vehicle.prototype.show = function () {
@@ -31,13 +35,17 @@ Vehicle.prototype.show = function () {
 };
 
 Vehicle.prototype.behaviors = function () {
+    this.randomColor();
     var arrive = this.arrive(this.target);
     var mouse = createVector(mouseX, mouseY);
-    var flee = this.flee(mouse);
-    flee.mult(10);
-    arrive.mult(3);
+    // var flee = this.flee(mouse);
+    // flee.mult(10);
+    var chase = this.chase(mouse);
+    chase.mult(10);
+    arrive.mult(2);
     this.applyForce(arrive);
-    this.applyForce(flee);
+    // this.applyForce(flee);
+    this.applyForce(chase);
 
 };
 Vehicle.prototype.applyForce = function (_force) {
@@ -46,19 +54,29 @@ Vehicle.prototype.applyForce = function (_force) {
 
 Vehicle.prototype.flee = function (_target) {
     var desired = p5.Vector.sub(_target, this.pos);
-
     if (desired.mag() < 50) {
-        this.randomColor();
         desired.setMag(this.maxSpeed);
         desired.mult(-1);
         var steer = p5.Vector.sub(desired, this.velocity);
         steer.limit(this.maxForce);
+        // this.randomColor();
         return steer;
     }
     else {
-        setTimeout(function () {
-            this.defaultColor();
-        }, 5000);
+        return createVector(0, 0);
+    }
+};
+Vehicle.prototype.chase = function (_target) {
+    var desired = p5.Vector.sub(this.pos, _target);
+    if (desired.mag() < 100) {
+        desired.setMag(this.maxSpeed);
+        desired.mult(-1);
+        var steer = p5.Vector.sub(desired, this.velocity);
+        steer.limit(this.maxForce);
+        // this.randomColor();
+        return steer;
+    }
+    else {
         return createVector(0, 0);
     }
 };
@@ -72,6 +90,15 @@ Vehicle.prototype.arrive = function (_target) {
     desired.setMag(speed);
     var arrive = p5.Vector.sub(desired, this.velocity);
     arrive.limit(this.maxForce);
-    this.defaultColor();
     return arrive;
+};
+Vehicle.prototype.isInPosition = function () {
+    var desired = p5.Vector.sub(this.target, this.pos);
+    var distance = desired.mag();
+    return (distance < 1);
+};
+Vehicle.prototype.randomColor = function () {
+    if (!this.isInPosition()) this.randomColor(); else {
+        this.defaultColor();
+    }
 };

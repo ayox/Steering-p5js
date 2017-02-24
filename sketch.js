@@ -4,7 +4,7 @@ function preload() {
     font = loadFont('FreeMonoBold.ttf')
 }
 function setup() {
-    createCanvas(1000, 400);
+    createCanvas(1800, 1800);
 
     // textFont(font);
     // textSize(200);
@@ -26,4 +26,5 @@ function draw() {
         _vehicle.update();
         _vehicle.show();
     })
+    frameRate(50);
 }
