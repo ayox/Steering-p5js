@@ -8,5 +8,5 @@ this is impelmenting Coding Challenge [link](https://www.youtube.com/watch?v=4hA
  - chasing mouse behavior 
  - change color to random if it's not it's position 
  
-## screenshot
-![screenshot](http://i.imgur.com/EObWEhF.gifv)
+## Screenshot
+![screenshot](https://i.imgur.com/EObWEhF.gif)
