@@ -6,7 +6,7 @@ this is impelmenting Coding Challenge [link](https://www.youtube.com/watch?v=4hA
 
 ## changes I made 
  - chasing mouse behavior 
- - change color to random if it's not it's position 
+ - change random color if original position changes
  
 ## Screenshot
 ![screenshot](https://i.imgur.com/EObWEhF.gif)
